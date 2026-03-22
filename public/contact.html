@@ -18,7 +18,88 @@
 
   <main>
     <h1>Contact</h1>
-    <p>Contact me at: hello@mysite.com</p>
+    <p>Fill out the form below and I'll get back to you.</p>
+
+    <form class="contact-form" action="/contact" method="POST" novalidate>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name">
+        <span class="field-error" id="name-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com">
+        <span class="field-error" id="email-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Your message..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+
+    <script>
+      const form = document.querySelector('.contact-form');
+
+      function showError(inputId, msg) {
+        const input = document.getElementById(inputId);
+        const error = document.getElementById(inputId + '-error');
+        input.classList.add('invalid');
+        error.textContent = msg;
+      }
+
+      function clearError(inputId) {
+        const input = document.getElementById(inputId);
+        const error = document.getElementById(inputId + '-error');
+        input.classList.remove('invalid');
+        error.textContent = '';
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      // Clear error on input
+      ['name', 'email'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => clearError(id));
+      });
+
+      // Validate email on blur
+      document.getElementById('email').addEventListener('blur', () => {
+        const email = document.getElementById('email').value.trim();
+        if (!email) {
+          showError('email', 'Email is required.');
+        } else if (!emailRegex.test(email)) {
+          showError('email', 'Please enter a valid email address.');
+        }
+      });
+
+      form.addEventListener('submit', (e) => {
+        let valid = true;
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        clearError('name');
+        clearError('email');
+
+        if (!name) {
+          showError('name', 'Name is required.');
+          valid = false;
+        }
+
+        if (!email) {
+          showError('email', 'Email is required.');
+          valid = false;
+        } else if (!emailRegex.test(email)) {
+          showError('email', 'Please enter a valid email address.');
+          valid = false;
+        }
+
+        if (!valid) e.preventDefault();
+      });
+    </script>
   </main>
 
   <script src="/theme.js"></script>
