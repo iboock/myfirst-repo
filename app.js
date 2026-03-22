@@ -19,10 +19,10 @@ app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 app.get('/about', (req, res) => {
-  res.send('This is the about page. I built this server myself!');
+  res.sendFile('about.html', { root: 'public' });
 });
 
 app.get('/contact', (req, res) => {
-  res.send('Contact me at: hello@mysite.com');
+  res.sendFile('contact.html', { root: 'public' });
 });
 
